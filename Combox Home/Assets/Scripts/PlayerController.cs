@@ -23,8 +23,8 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_rigidbody = GetComponent<Rigidbody2D> ();
-		_movSpeed = 40.0f;
-		_jumpSpeed = 150.0f;
+		_movSpeed = 30.0f;
+		_jumpSpeed = 180.0f;
 		_timerJump = 0.0f;
 		_timerDunk = 0.0f;
 		_startJump = false;
@@ -38,6 +38,11 @@ public class PlayerController : MonoBehaviour {
 		_timerJump = _timerJump+Time.deltaTime;
 		_timerDunk = _timerDunk+Time.deltaTime;
 		float mv_horizontal = Input.GetAxis ("Horizontal");
+		if (mv_horizontal < 0f) {
+			gameObject.GetComponentInChildren<LightController> ().move (-1);
+		} else if (mv_horizontal > 0f) {
+			gameObject.GetComponentInChildren<LightController> ().move (1);
+		}
 		_movVel = (new Vector2 (-mv_horizontal, 0.0f).normalized * _movSpeed);
 		if (isGrounded () && Input.GetKeyDown (KeyCode.UpArrow)) {
 			_startJump = true; 
@@ -95,7 +100,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	bool canGoDown(){
-		RaycastHit2D hit = Physics2D.Raycast (transform.position, Vector2.down, GetComponent<BoxCollider2D> ().bounds.extents.y + 0.1f, mask);
+		RaycastHit2D hit = Physics2D.Raycast (transform.position-new Vector3(0.0f, 2.0f, 0.0f), Vector2.down, 0.1f, mask);
 		if (hit && hit.collider.gameObject.CompareTag ("DownGround")){
 			_lastFloorCollider = hit.collider.GetComponent<BoxCollider2D>();
 			return true;
@@ -104,9 +109,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	bool isGrounded(){			
-		return Physics2D.Raycast (transform.position, Vector2.down, GetComponent<BoxCollider2D>().bounds.extents.y+0.1f, mask);
+		return Physics2D.Raycast (transform.position-new Vector3(0.0f, 2.0f, 0.0f), Vector2.down, 0.1f, mask);
 	}
-
-
 
 }
