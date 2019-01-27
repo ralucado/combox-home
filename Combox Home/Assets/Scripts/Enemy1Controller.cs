@@ -20,7 +20,7 @@ public class Enemy1Controller : MonoBehaviour {
 		_spriteTime = 0.03f;
 		_offset = Random.Range (0f, 1f);
 		_spawning = true;
-		_spawnTimer = 0f;
+		_spawnTimer = 0.0f;
 //		_spawnMaxTime = 0.5f;
 		transform.localScale = new Vector3 (0.1f,0.1f,0.05f);
 
